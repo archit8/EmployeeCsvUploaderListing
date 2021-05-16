@@ -1,3 +1,4 @@
+This Project contains the UI for the Employee details and source file is index.js we need to run this along with EmployeeDetailsBackend locally
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
