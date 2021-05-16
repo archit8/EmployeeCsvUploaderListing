@@ -10,7 +10,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: []
+      data: [],
+      filtered: []
     };
   }
   componentDidMount() {
@@ -29,12 +30,38 @@ onFormSubmit = () => {
     this.setState({data: text })
   });
 }
+onFilteredChangeCustom = (value, accessor) => {
+  let filtered = this.state.filtered;
+  let insertNewFilter = 1;
+
+  if (filtered.length) {
+    filtered.forEach((filter, i) => {
+      if (filter["id"] === accessor) {
+        if (value === "" || !value.length) filtered.splice(i, 1);
+        else filter["value"] = value;
+
+        insertNewFilter = 0;
+      }
+    });
+  }
+
+  if (insertNewFilter) {
+    filtered.push({ id: accessor, value: value });
+  }
+
+  this.setState({ filtered: filtered });
+};
   render() {
     const { data } = this.state;
     console.log("resdata", data);
     return (
       <div>
         <ReactTable
+          filterable
+          filtered={this.state.filtered}
+          onFilteredChange={(filtered, column, value) => {
+            this.onFilteredChangeCustom(value, column.id || column.accessor);
+          }}
           data={data}
           columns={[
             {
